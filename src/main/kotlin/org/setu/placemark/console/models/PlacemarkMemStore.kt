@@ -25,7 +25,7 @@ class PlacemarkMemStore : PlacemarkStore {
     }
 
     override fun update(placemark: PlacemarkModel) {
-        var foundPlacemark = findOne(placemark.id!!)
+        val foundPlacemark = findOne(placemark.id)
         if (foundPlacemark != null) {
             println("The information you have entered is valid and will be updated.")
             foundPlacemark.title = placemark.title
@@ -33,7 +33,11 @@ class PlacemarkMemStore : PlacemarkStore {
         }
     }
 
+    override fun delete(placemark: PlacemarkModel) {
+        placemarks.remove(placemark)
+    }
+
     fun logAll() {
-        placemarks.forEach { println("${it}") }
+        placemarks.forEach { println("$it") }
     }
 }

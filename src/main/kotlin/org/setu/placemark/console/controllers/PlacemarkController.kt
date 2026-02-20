@@ -1,20 +1,19 @@
 package org.setu.placemark.console.controllers
 
 import mu.KotlinLogging
-import org.setu.placemark.console.models.PlacemarkMemStore
+import org.setu.placemark.console.models.PlacemarkJSONStore
 import org.setu.placemark.console.models.PlacemarkModel
 import org.setu.placemark.console.views.PlacemarkView
 
 class PlacemarkController {
-
-    val placemarks = PlacemarkMemStore()
+    val placemarks = PlacemarkJSONStore()
     val placemarkView = PlacemarkView()
     val logger = KotlinLogging.logger {}
 
 
     fun start(){
         logger.info { "Launching Placemark Console App" }
-        println("Placemark Kotlin App Version 2.0")
+        println("Placemark Kotlin App Version 4.0")
 
         var input: Int
 
@@ -25,6 +24,7 @@ class PlacemarkController {
                 2 -> update()
                 3 -> list()
                 4 -> search()
+                5 -> delete()
                 -99 -> dummyData()
                 -1 -> println("Exiting App")
                 else -> println("Invalid Option")
@@ -67,6 +67,21 @@ class PlacemarkController {
         else
             println("Placemark Not Updated...")
     }
+
+    fun delete() {
+        placemarkView.listPlacemarks(placemarks)
+        var searchId = placemarkView.getId()
+        val aPlacemark = search(searchId)
+
+        if(aPlacemark != null) {
+            placemarks.delete(aPlacemark)
+            println("Placemark Deleted...")
+            placemarkView.listPlacemarks(placemarks)
+        }
+        else
+            println("Placemark Not Deleted...")
+    }
+
 
     fun search() {
         val aPlacemark = search(placemarkView.getId())!!
